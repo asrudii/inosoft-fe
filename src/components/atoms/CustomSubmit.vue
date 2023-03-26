@@ -1,38 +1,29 @@
 <template>
-  <button
-    class="btn"
+  <input
+    type="submit"
+    :value="title"
+    class="submit"
     :class="[
       {
         primary: type === 'primary',
         secondary: type === 'secondary',
         outline: type === 'outline',
         base: type === 'base',
-        parimary_base: type === 'parimary-base',
         medium: size === 'medium',
       },
       title ? longPadding : shortPadding,
     ]"
-    @click="onClick($event)"
-  >
-    {{ title }}
-    <custom-icon v-if="icon" :name="icon" base-class="custom-icon" />
-  </button>
+  />
 </template>
 
 <script>
-import customIcon from "vue-icon/lib/vue-feather.esm";
 export default {
-  name: "CustomButton",
+  name: "CustomSubmit",
   props: {
     title: String,
     type: String,
     size: String,
     icon: String,
-    onClick: Function,
-  },
-  created() {
-    // props are exposed on `this`
-    console.log(this.title);
   },
   data() {
     return {
@@ -40,14 +31,11 @@ export default {
       longPadding: "px-14",
     };
   },
-  components: {
-    customIcon,
-  },
 };
 </script>
 
 <style scoped lang="scss">
-.btn {
+.submit {
   @apply rounded-sm flex items-center gap-3;
 
   &:hover {
@@ -65,9 +53,6 @@ export default {
 }
 .base {
   @apply bg-white text-gray-400 outline-none px-5;
-}
-.parimary_base {
-  @apply bg-white text-primary outline-none px-0;
 }
 .medium {
   @apply h-10 w-fit;

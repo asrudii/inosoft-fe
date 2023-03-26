@@ -1,26 +1,49 @@
 <template>
-  <div class="flex gap-3 justify-center">
-    <CustomButton icon="plus" type="primary" size="medium" />
-    <CustomButton icon="minus" type="secondary" size="medium" />
-    <CustomButton title="Cancel" type="base" size="medium" />
-    <CustomButton title="Save as Draft" type="outline" size="medium" />
-    <CustomButton title="Submit" type="primary" size="medium" />
-    <div>
-      <BaseInput />
-    </div>
+  <div class="home">
+    <CostForm />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import BaseInput from "@/components/atoms/BaseInput.vue";
-import CustomButton from "@/components/atoms/CustomButton.vue";
+import CostForm from "@/components/organisms/CostForm.vue";
 
 export default {
   name: "HomeView",
   components: {
-    CustomButton,
-    BaseInput,
+    CostForm,
+  },
+  data() {
+    return {
+      currency: [
+        {
+          id: 1,
+          name: "USD",
+          value: "usd",
+        },
+        {
+          id: 2,
+          name: "IDR",
+          value: "idr",
+        },
+      ],
+      currencySelected: "",
+      description: "",
+    };
+  },
+  methods: {
+    onChangeCurrency(event) {
+      this.currencySelected = event.target.value;
+    },
+    onChangeDescription(event) {
+      this.description = event.target.value;
+    },
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.home {
+  @apply p-10;
+}
+</style>
