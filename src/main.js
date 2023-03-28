@@ -1,10 +1,12 @@
 import Vue from "vue";
+import VueToastify from "vue-toastify";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import "./styles/index.scss";
 
 Vue.config.productionTip = false;
+Vue.use(VueToastify);
 
 new Vue({
   router,

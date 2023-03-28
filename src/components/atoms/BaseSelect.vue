@@ -1,5 +1,10 @@
 <template>
-  <select class="select" :id="id" :name="name" @change="onChange($event)">
+  <select
+    class="select"
+    :id="id"
+    :name="name"
+    @change="onChange ? onChange($event) : null"
+  >
     <option
       v-for="(item, i) in options"
       :selected="i === 0"

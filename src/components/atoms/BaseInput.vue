@@ -5,8 +5,8 @@
     :placeholder="placeholder"
     :id="id"
     :name="name"
-    :value="type === 'number' ? +value.toLocaleString() : value"
-    @change="onChange($event)"
+    :value="type === 'number' ? +value?.toLocaleString() : value"
+    @change="onChange ? onChange($event) : null"
   />
 </template>
 
@@ -42,5 +42,9 @@ export default {
 .input[type="number"] {
   @apply text-right;
   -moz-appearance: textfield;
+
+  &::placeholder {
+    @apply text-left;
+  }
 }
 </style>

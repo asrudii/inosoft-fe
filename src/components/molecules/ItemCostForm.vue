@@ -4,59 +4,57 @@
       <BaseInput
         type="text"
         placeholder="description"
-        :onChange="onChangeDescription"
+        :name="id + 'description'"
       />
     </td>
     <td>
       <div class="w-20">
-        <BaseInput
-          type="text"
-          placeholder="Qty"
-          :onChange="onChangeDescription"
-        />
+        <BaseInput type="number" placeholder="Qty" :name="id + 'qty'" />
       </div>
     </td>
     <td>
       <div class="w-20">
-        <BaseSelect :options="uom" :onChange="onChangeCurrency" />
+        <BaseSelect :options="this.$store.state.uom" :name="id + 'uom'" />
+      </div>
+    </td>
+    <td>
+      <div class="w-28">
+        <BaseInput type="number" placeholder="Unit Price" :name="id + 'unit'" />
       </div>
     </td>
     <td>
       <div class="w-28">
         <BaseInput
-          type="text"
-          placeholder="Unit Price"
-          :onChange="onChangeDescription"
-        />
-      </div>
-    </td>
-    <td>
-      <div class="w-28">
-        <BaseInput
-          type="text"
+          type="number"
           placeholder="Discount"
-          :onChange="onChangeDescription"
+          :name="id + 'discount'"
         />
       </div>
     </td>
     <td>
       <div class="w-28">
-        <BaseInput
-          type="text"
-          placeholder="VAT"
-          :onChange="onChangeDescription"
-        />
+        <BaseInput type="number" placeholder="VAT" :name="id + 'vat'" />
       </div>
     </td>
     <td>
-      <BaseSelect :options="currency" :onChange="onChangeCurrency" />
+      <div class="w-20">
+        <BaseSelect
+          :options="this.$store.state.currency"
+          :name="id + 'currency'"
+        />
+      </div>
     </td>
     <td><div class="w-24">0.00</div></td>
     <td><div class="w-20">0.00</div></td>
     <td><div class="w-20">0.00</div></td>
     <td>
       <div class="w-full flex items-center gap-2">
-        <BaseSelect :options="charge" :onChange="onChangeCurrency" />
+        <BaseSelect
+          :options="[
+            { name: 'Select an option', value: 'default' },
+            ...this.$store.state.banks,
+          ]"
+        />
         <CustomButton
           icon="minus"
           type="secondary"
@@ -78,56 +76,13 @@ export default {
   components: { BaseSelect, CustomButton, BaseInput },
   props: {
     onRemoveItemForm: Function,
+    id: String,
   },
   data() {
     return {
-      currency: [
-        {
-          id: 1,
-          name: "USD",
-          value: "usd",
-        },
-        {
-          id: 2,
-          name: "IDR",
-          value: "idr",
-        },
-      ],
-      charge: [
-        {
-          id: 1,
-          name: "Select an option",
-          value: "1",
-        },
-        {
-          id: 2,
-          name: "IDR",
-          value: "idr",
-        },
-      ],
-      uom: [
-        {
-          id: 1,
-          name: "SHP",
-          value: "1",
-        },
-        {
-          id: 2,
-          name: "IDR",
-          value: "idr",
-        },
-      ],
       currencySelected: "",
       description: "",
     };
-  },
-  methods: {
-    onChangeCurrency(event) {
-      this.currencySelected = event.target.value;
-    },
-    onChangeDescription(event) {
-      this.description = event.target.value;
-    },
   },
 };
 </script>

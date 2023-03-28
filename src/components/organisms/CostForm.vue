@@ -8,65 +8,68 @@
       :onClick="toogleShowTable"
     />
 
-    <table :class="{ hide: isHideTable }">
-      <thead>
-        <tr>
-          <th>Description</th>
-          <th>Qty</th>
-          <th>UOM</th>
-          <th>Unit Price</th>
-          <th>Discount (%)</th>
-          <th>VAT (%)</th>
-          <th>Currency</th>
-          <th>VAT Amount</th>
-          <th>Subtotal</th>
-          <th>Total</th>
-          <th>Charge To</th>
-        </tr>
-      </thead>
-      <tbody>
-        <ItemCostForm
-          v-for="(item, i) in itemsForm"
-          :key="item + i"
-          :onRemoveItemForm="() => onRemoveItemForm(item)"
-        />
-      </tbody>
-      <tfoot>
-        <tr>
-          <td colspan="6" rowspan="2">
-            <div class="flex items-center">
-              <span>Exchange Rate 1 USD = </span>
-              <div class="w-28 mx-2">
-                <BaseInput type="number" value="36725" />
+    <div class="table_wrap" :class="{ hide: isHideTable }">
+      <table>
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>Qty</th>
+            <th>UOM</th>
+            <th>Unit Price</th>
+            <th>Discount (%)</th>
+            <th>VAT (%)</th>
+            <th>Currency</th>
+            <th>VAT Amount</th>
+            <th>Subtotal</th>
+            <th>Total</th>
+            <th>Charge To</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ItemCostForm
+            v-for="(item, i) in this.$store.state.itemsForm"
+            :key="item + i"
+            :id="'data' + item"
+            :onRemoveItemForm="() => onRemoveItemForm(item)"
+          />
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="6" rowspan="2">
+              <div class="flex items-center">
+                <span>Exchange Rate 1 USD = </span>
+                <div class="w-28 mx-2">
+                  <BaseInput type="number" value="36725" />
+                </div>
+                <span>AED</span>
               </div>
-              <span>AED</span>
-            </div>
-          </td>
-          <td class="bg-gray-200">AED in Total</td>
-          <td class="bg-gray-200">0.00</td>
-          <td class="bg-gray-200">0.00</td>
-          <td class="bg-gray-200">0.00</td>
-          <td rowspan="2">
-            <div class="flex justify-end">
-              <CustomButton
-                icon="plus"
-                type="primary"
-                size="medium"
-                :onClick="onAddItemForm"
-              />
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td class="bg-gray-200">
-            <div><span>USD in Total</span></div>
-          </td>
-          <td class="bg-gray-200">0.00</td>
-          <td class="bg-gray-200">0.00</td>
-          <td class="bg-gray-200">0.00</td>
-        </tr>
-      </tfoot>
-    </table>
+            </td>
+            <td class="bg-gray-200">AED in Total</td>
+            <td class="bg-gray-200">0.00</td>
+            <td class="bg-gray-200">0.00</td>
+            <td class="bg-gray-200">0.00</td>
+            <td rowspan="2">
+              <div class="flex justify-end">
+                <CustomButton
+                  icon="plus"
+                  type="primary"
+                  size="medium"
+                  :onClick="onAddItemForm"
+                />
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="bg-gray-200">
+              <div><span>USD in Total</span></div>
+            </td>
+            <td class="bg-gray-200">0.00</td>
+            <td class="bg-gray-200">0.00</td>
+            <td class="bg-gray-200">0.00</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -80,19 +83,15 @@ export default {
   components: { ItemCostForm, BaseInput, CustomButton },
   data() {
     return {
-      itemsForm: [1],
       isHideTable: false,
     };
   },
   methods: {
     onAddItemForm() {
-      this.itemsForm = [
-        ...this.itemsForm,
-        this.itemsForm[this.itemsForm.length - 1] + 1 || 1,
-      ];
+      this.$store.commit("addItemForm");
     },
     onRemoveItemForm(no) {
-      this.itemsForm = this.itemsForm.filter((item) => item !== no);
+      this.$store.commit("removeItemForm", no);
     },
     toogleShowTable() {
       this.isHideTable = !this.isHideTable;
@@ -108,22 +107,26 @@ export default {
     @apply border-gray-200 border-2;
   }
   .hide {
-    @apply invisible opacity-0;
+    max-height: 0 !important;
   }
-  table {
-    @apply w-full visible opacity-100 text-sm transition-all ease-in-out duration-300;
+  .table_wrap {
+    @apply overflow-hidden transition-all ease-in-out duration-500 max-h-[10000px];
 
-    th {
-      @apply text-left p-2 bg-gray-100 font-normal text-gray-500;
-    }
+    table {
+      @apply w-full text-sm;
 
-    td {
-      @apply p-2 text-left text-gray-500;
-    }
+      th {
+        @apply text-left p-2 bg-gray-100 font-normal text-gray-500;
+      }
 
-    tfoot {
-      tr:nth-child(1) {
-        @apply border-b-4 border-b-white;
+      td {
+        @apply p-2 text-left text-gray-500;
+      }
+
+      tfoot {
+        tr:nth-child(1) {
+          @apply border-b-4 border-b-white;
+        }
       }
     }
   }
